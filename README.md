@@ -3,7 +3,7 @@
 
 #本Demo源代码讲解
 
-![标哥的技术博客](http://www.henishuo.com/uibezierpath-draw/)
+[标哥的技术博客](http://www.henishuo.com/uibezierpath-draw/)
 
 #关注我
 
