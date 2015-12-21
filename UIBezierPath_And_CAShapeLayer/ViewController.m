@@ -13,6 +13,9 @@
 
 @property (nonatomic, strong) CAShapeLayer *loadingLayer;
 @property (nonatomic, strong) NSTimer       *timer;
+@property (nonatomic, strong) NSArray       *animationTypes;
+@property (nonatomic, assign) NSUInteger    index;
+@property (nonatomic, strong) BezierPathView *pathView;
 
 @end
 
@@ -25,12 +28,12 @@
   self.edgesForExtendedLayout = UIRectEdgeNone;
   
   // 如果要测试UIBezierPath，打开注释
-//  [self testBezierPath];
+  [self testBezierPath];
   
   // 使用CAShapeLayer与UIBezierPath画圆
 //  [self drawCircle];
   
-  [self drawHalfCircle];
+//  [self drawHalfCircle];
 }
 
 - (void)drawHalfCircle {
@@ -99,17 +102,37 @@
   v.layer.borderWidth = 5;
   v.backgroundColor = [UIColor whiteColor];
   
-  //  v.type = kDefaultPath;
-  //  v.type = kRectPath;
-  //  v.type = kCirclePath;
-  //  v.type = kOvalPath;
-  //  v.type = kRoundedRectPath;
-  //  v.type = kArcPath;
-  //  v.type = kSecondBezierPath;
-  v.type = kThirdBezierPath;
+  v.type = kDefaultPath;
+  self.index = 0;
+  
+  self.animationTypes = @[@(kDefaultPath),
+                          @(kRectPath),
+                          @(kCirclePath),
+                          @(kOvalPath),
+                          @(kRoundedRectPath),
+                          @(kArcPath),
+                          @(kSecondBezierPath)];
+  
+  self.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                target:self
+                                              selector:@selector(updateType)
+                                              userInfo:nil
+                                               repeats:YES];
   
   self.view.layer.borderWidth = 1;
   self.view.layer.borderColor = [UIColor blueColor].CGColor;
+  self.pathView = v;
+}
+
+- (void)updateType {
+  if (self.index + 1 < self.animationTypes.count) {
+    self.index ++;
+  } else {
+    self.index = 0;
+  }
+  
+  self.pathView.type = [[self.animationTypes objectAtIndex:self.index] intValue];
+  [self.pathView setNeedsDisplay];
 }
 
 @end
